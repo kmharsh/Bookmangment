@@ -1,0 +1,21 @@
+.like-button {
+    cursor: pointer;
+    font-size: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .heart-icon {
+    font-size: 2rem;
+    transition: color 0.3s ease;
+  }
+  
+  .liked .heart-icon {
+    color: #FF0000;
+  }
+  
+  .heart-icon {
+    color: #D3D3D3;
+  }
+  

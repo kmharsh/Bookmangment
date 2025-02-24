@@ -1,0 +1,38 @@
+.cart {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 15px;
+    
+    h2 {
+      color: #333;
+      font-size: 2rem;
+    }
+  
+    ul {
+      list-style: none;
+      padding: 0;
+  
+      li {
+        color: #555;
+        font-size: 1.1rem;
+        padding: 5px 0;
+      }
+    }
+  
+    button {
+      background-color: #ff5722;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+  
+      &:hover {
+        background-color: #e64a19;
+      }
+    }
+  }
+  

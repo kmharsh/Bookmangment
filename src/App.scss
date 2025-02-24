@@ -1,0 +1,52 @@
+$primary-color: #000;
+$secondary-color: #ff5722;
+$font-stack: Arial, sans-serif;
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: #000;
+}
+
+.App {
+  text-align: center;
+  font-family: $font-stack;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: $primary-color;
+    font-size: 1rem;
+  }
+
+  .d-flex {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  table {
+    width: 100%;
+    tr {
+      text-align: center;
+      margin: 0 auto;
+
+      td {
+        text-align: end;
+        padding-right: 10px;
+        width: 50%;
+
+        &:last-child {
+          text-align: left;
+          width: 50%;
+        }
+      }
+    }
+  }
+}
