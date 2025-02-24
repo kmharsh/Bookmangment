@@ -11,14 +11,14 @@ function AddBook() {
   const formFields = [
     { name: "title", placeholder: "Title", type: "text" },
     { name: "author", placeholder: "Author", type: "text" },
-    { name: "price", placeholder: "Price", type: "number" },
+    { name: "price", placeholder: "Price", type: "number", step: "0.01" },
   ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setBookDetails({
       ...bookDetails,
-      [name]: value,
+      [name]: name === "price" ? parseFloat(value) || "" : value,
     });
   };
 
@@ -31,16 +31,15 @@ function AddBook() {
     }
 
     const existingBooks = JSON.parse(localStorage.getItem("books")) || [];
-
     const newId = existingBooks.length;
 
     const bookWithId = {
       ...bookDetails,
       id: newId,
+      price: parseFloat(bookDetails.price) || 0,
     };
 
     existingBooks.push(bookWithId);
-
     localStorage.setItem("books", JSON.stringify(existingBooks));
 
     console.log("Book added:", bookWithId);
@@ -76,10 +75,11 @@ function AddBook() {
                 value={bookDetails[field.name]}
                 onChange={handleChange}
                 placeholder={field.placeholder}
+                step={field.step}
                 required
               />
             )}
-          </div>
+    </div>
         ))}
         <button type="submit">Add Book</button>
       </form>
