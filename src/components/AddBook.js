@@ -55,7 +55,9 @@ function AddBook() {
       navigate("/");
     } else {
       const existingBooks = JSON.parse(localStorage.getItem("books")) || [];
-      const newId = existingBooks.length;
+      const newId = existingBooks.length > 0 
+        ? Math.max(...existingBooks.map(book => book.id)) + 1
+        : 0;
 
       const newBook = {
         ...updatedBook,

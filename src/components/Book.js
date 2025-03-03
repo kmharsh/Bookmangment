@@ -41,6 +41,7 @@ function Book({ book }) {
   };
 
   const startEditing = () => {
+    alert(book.id);
     setIsEditing(true);
     setEditedBook(book); 
   };
