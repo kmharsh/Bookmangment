@@ -1,12 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import "./styles/from.scss";
 
 function AddBook() {
-  const [bookDetails, setBookDetails] = useState({
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [bookForm, setBookForm] = useState({
     title: "",
     author: "",
     price: "",
   });
+
+  useEffect(() => {
+    if (id) {
+      const existingBooks = JSON.parse(localStorage.getItem("books")) || [];
+      const bookToEdit = existingBooks.find(book => book.id === parseInt(id));
+      if (bookToEdit) {
+        setBookForm({
+          title: bookToEdit.title,
+          author: bookToEdit.author,
+          price: bookToEdit.price,
+        });
+      }
+    }
+  }, [id]);
 
   const formFields = [
     { name: "title", placeholder: "Title", type: "text" },
@@ -16,72 +33,60 @@ function AddBook() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setBookDetails({
-      ...bookDetails,
+    setBookForm({
+      ...bookForm,
       [name]: name === "price" ? parseFloat(value) || "" : value,
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (typeof localStorage === "undefined") {
-      console.log("localStorage is not available");
-      return;
-    }
-
-    const existingBooks = JSON.parse(localStorage.getItem("books")) || [];
-    const newId = existingBooks.length;
-
-    const bookWithId = {
-      ...bookDetails,
-      id: newId,
-      price: parseFloat(bookDetails.price) || 0,
+    const updatedBook = {
+      ...bookForm,
+      price: parseFloat(bookForm.price) || 0,
     };
 
-    existingBooks.push(bookWithId);
-    localStorage.setItem("books", JSON.stringify(existingBooks));
+    if (id) {
+      const existingBooks = JSON.parse(localStorage.getItem("books")) || [];
+      const updatedBooks = existingBooks.map((book) =>
+        book.id === parseInt(id) ? { ...book, ...updatedBook } : book
+      );
+      localStorage.setItem("books", JSON.stringify(updatedBooks));
+      navigate("/");
+    } else {
+      const existingBooks = JSON.parse(localStorage.getItem("books")) || [];
+      const newId = existingBooks.length;
 
-    console.log("Book added:", bookWithId);
-    console.log("Books in localStorage:", existingBooks);
+      const newBook = {
+        ...updatedBook,
+        id: newId,
+      };
 
-    setBookDetails({
-      title: "",
-      author: "",
-      price: "",
-    });
+      existingBooks.push(newBook);
+      localStorage.setItem("books", JSON.stringify(existingBooks));
+      navigate("/");
+    }
   };
 
   return (
     <div className="add-book-form">
-      <h2>Add a New Book</h2>
+      <h2>{id ? "Edit Book" : "Add a New Book"}</h2>
       <form onSubmit={handleSubmit}>
         {formFields.map((field) => (
           <div className="form-group" key={field.name}>
-            {field.type === "textarea" ? (
-              <textarea
-                id={field.name}
-                name={field.name}
-                value={bookDetails[field.name]}
-                onChange={handleChange}
-                placeholder={field.placeholder}
-                required
-              />
-            ) : (
-              <input
-                type={field.type}
-                id={field.name}
-                name={field.name}
-                value={bookDetails[field.name]}
-                onChange={handleChange}
-                placeholder={field.placeholder}
-                step={field.step}
-                required
-              />
-            )}
-    </div>
+            <input
+              type={field.type}
+              id={field.name}
+              name={field.name}
+              value={bookForm[field.name]}
+              onChange={handleChange}
+              placeholder={field.placeholder}
+              step={field.step}
+              required
+            />
+          </div>
         ))}
-        <button type="submit">Add Book</button>
+        <button type="submit">{id ? "Save Changes" : "Add Book"}</button>
       </form>
     </div>
   );

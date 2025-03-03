@@ -18,6 +18,7 @@ function ManinComponent() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/purchase-history" element={<PurchaseHistory />} />
           <Route path="/add-book" element={<AddBook />} />
+          <Route path="/editbook/:id" element={<AddBook />} />
         </Routes>
       </div>
     </Router>
