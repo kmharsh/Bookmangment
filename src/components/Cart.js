@@ -1,5 +1,6 @@
 import './styles/Cart.scss';
 import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 
 function Cart() {
   const [cart, setCart] = useState(() => {
@@ -25,11 +26,20 @@ function Cart() {
     setCart(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
-
+  const navigate = useNavigate();
   const handlePurchase = () => {
+    // Calculate total amount
+    const totalAmount = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+
+    // Store purchase history in localStorage
+    localStorage.setItem("purchaseHistory", JSON.stringify({ cart, totalAmount }));
+
+    // Clear the cart
     localStorage.removeItem("cart");
     setCart([]);
-    alert("Purchase successful!");
+
+    // Navigate to the purchase history page
+    navigate('/purchase-history');
   };
 
   return (
