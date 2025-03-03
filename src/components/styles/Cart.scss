@@ -1,38 +1,99 @@
 .cart {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 15px;
+  
+  h2 {
+    color: #333;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  // Table styling
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 15px;
-    
-    h2 {
-      color: #333;
-      font-size: 2rem;
+
+    th, td {
+      padding: 12px 15px;
+      text-align: center;
+      border: 1px solid #ddd;
     }
-  
-    ul {
-      list-style: none;
-      padding: 0;
-  
-      li {
-        color: #555;
-        font-size: 1.1rem;
-        padding: 5px 0;
-      }
+
+    th {
+      background-color: #f4f4f4;
+      font-weight: bold;
     }
-  
-    button {
-      background-color: #ff5722;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      font-size: 1rem;
-      cursor: pointer;
-  
-      &:hover {
-        background-color: #e64a19;
+
+    td {
+      color: #555;
+      font-size: 1.1rem;
+    }
+    tbody{
+      tr {
+        td{
+          width: auto;
+          text-align: center;
+          &:last-child{
+            width: auto;
+          }
+        }
       }
     }
   }
-  
+
+  // Styling for Quantity and Actions
+  .quantity-wrp {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 15px;
+    max-width: 100px;
+    margin: 0 auto;
+
+    span {
+      padding: 8px 12px;
+      background-color: #f4f4f4;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #e64a19;
+        color: white;
+      }
+    }
+  }
+
+  // Purchase button styling
+  button {
+    background-color: #ff5722;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: block;
+    margin-top: 20px;
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+
+    &:hover {
+      background-color: #e64a19;
+    }
+  }
+
+  // Empty cart message styling
+  p {
+    text-align: center;
+    font-size: 18px;
+    color: #888;
+  }
+}

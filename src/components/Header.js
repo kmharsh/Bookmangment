@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import CartModal from './CartModal';
-
 import './styles/Header.scss';
 
 function Header() {
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const [cart, setCart] = useState([]);
   const [cartVisible, setCartVisible] = useState(false);
+
+  useEffect(() => {
+    const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    setCart(savedCart);
+  }, []); // Run only once on component mount
 
   const toggleCartModal = () => {
     setCartVisible(!cartVisible);

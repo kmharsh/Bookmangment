@@ -15,7 +15,6 @@
       align-items: baseline;
       justify-content: space-between;
     }
-
   }
 
   .like-button {
@@ -43,16 +42,12 @@
       content: '';
       position: absolute;
       z-index: -1;
-      -webkit-transition: all 0.3s;
-      -moz-transition: all 0.3s;
       transition: all 0.3s;
     }
-
-   
   }
 
   .btn-2 {
-      &:before {
+    &:before {
       position: absolute;
       height: 100%;
       left: 0;
@@ -60,6 +55,25 @@
       line-height: 3;
       font-size: 140%;
       width: 60px;
+    }
+  }
+
+  .edit-icon {
+    position: absolute;
+    top: 0px;
+    right: 42px;
+    opacity: 0;
+    cursor: pointer;
+    font-size: 24px;
+    transition: opacity 0.3s ease-in-out;
+    color: #000;
+    transform: rotate(129deg);
+    text-decoration: none;
+  }
+
+  &:hover {
+    .edit-icon {
+      opacity: 1;
     }
   }
 

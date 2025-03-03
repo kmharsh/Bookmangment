@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import './styles/Book.scss';
 import LikeButton from "./LikeButton";
+import AddBook from "./AddBook";
 
 function Book({ book }) {
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")) || []);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedBook, setEditedBook] = useState(null);
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -21,6 +25,25 @@ function Book({ book }) {
     } else {
       alert("This book is already in your cart!");
     }
+  };
+
+  const handleSaveEdit = (updatedBook) => {
+    setIsEditing(false);
+    console.log("Updated Book:", updatedBook);
+
+    const existingBooks = JSON.parse(localStorage.getItem("books")) || [];
+    const updatedBooks = existingBooks.map(bookItem =>
+      bookItem.id === updatedBook.id ? updatedBook : bookItem
+    );
+
+    localStorage.setItem("books", JSON.stringify(updatedBooks));
+    console.log("Books after update:", updatedBooks);
+  };
+
+  const startEditing = () => {
+    alert(book.id);
+    setIsEditing(true);
+    setEditedBook(book); 
   };
 
   return (
@@ -43,13 +66,28 @@ function Book({ book }) {
             </tr>
           </tbody>
         </table>
-        <span 
-          onClick={() => addToCart(book)} 
+        <span
+          onClick={() => addToCart(book)}
           className="btn btn-2 btn-sep icon-cart"
         >
           Add to Cart
         </span>
       </div>
+
+      <Link
+        to={`/editbook/${book.id}`}
+        onClick={startEditing}
+        className="edit-icon icon-pencil"
+      >
+        &#9999;
+      </Link>
+
+      {isEditing && editedBook && (
+        <AddBook 
+          bookDetails={editedBook} 
+          onSave={handleSaveEdit} 
+        />
+      )}
     </div>
   );
 }
