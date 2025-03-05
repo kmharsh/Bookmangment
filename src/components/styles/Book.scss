@@ -71,10 +71,24 @@
     text-decoration: none;
   }
 
+  .icon-trash{
+    position: absolute;
+    top: 0px;
+    right: 74px;
+    opacity: 0;
+    cursor: pointer;
+    font-size: 24px;
+    transition: opacity 0.3s ease-in-out;
+    color: #000;
+    transform: rotate(1deg);
+    text-decoration: none;
+    
+  }
   &:hover {
-    .edit-icon {
+    .edit-icon,.delete-icon {
       opacity: 1;
     }
   }
-
+  
+  
 }

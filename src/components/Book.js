@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 import './styles/Book.scss';
 import LikeButton from "./LikeButton";
 import AddBook from "./AddBook";
@@ -8,6 +8,7 @@ function Book({ book }) {
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")) || []);
   const [isEditing, setIsEditing] = useState(false);
   const [editedBook, setEditedBook] = useState(null);
+  const navigate = useNavigate(); // To navigate programmatically
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -46,6 +47,23 @@ function Book({ book }) {
     setEditedBook(book); 
   };
 
+  const startDelete = () => {
+    if (window.confirm("Are you sure you want to delete this book?")) {
+      deleteBook(book.id);
+    }
+  };
+
+  const deleteBook = (id) => {
+    const existingBooks = JSON.parse(localStorage.getItem("books")) || [];
+    const updatedBooks = existingBooks.filter(bookItem => bookItem.id !== id);
+
+    localStorage.setItem("books", JSON.stringify(updatedBooks));
+    console.log("Books after deletion:", updatedBooks);
+
+    // Reload the page to reflect changes
+    window.location.reload();
+  };
+
   return (
     <div className="bookcart">
       <LikeButton bookId={book.id} />
@@ -80,6 +98,13 @@ function Book({ book }) {
         className="edit-icon icon-pencil"
       >
         &#9999;
+      </Link>
+
+      <Link
+        onClick={startDelete}
+        className="delete-icon icon-trash"
+      >
+       &#x2421;
       </Link>
 
       {isEditing && editedBook && (
