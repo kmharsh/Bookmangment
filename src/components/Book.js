@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import { Link, useNavigate } from "react-router-dom";
 import './styles/Book.scss';
 import LikeButton from "./LikeButton";
 import AddBook from "./AddBook";
 
 function Book({ book }) {
+  console.log(book.bookimg, "img");
+
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")) || []);
   const [isEditing, setIsEditing] = useState(false);
   const [editedBook, setEditedBook] = useState(null);
-  const navigate = useNavigate(); // To navigate programmatically
+  const navigate = useNavigate();
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -42,9 +44,8 @@ function Book({ book }) {
   };
 
   const startEditing = () => {
-    alert(book.id);
     setIsEditing(true);
-    setEditedBook(book); 
+    setEditedBook(book);
   };
 
   const startDelete = () => {
@@ -59,61 +60,63 @@ function Book({ book }) {
 
     localStorage.setItem("books", JSON.stringify(updatedBooks));
     console.log("Books after deletion:", updatedBooks);
-
-    // Reload the page to reflect changes
     window.location.reload();
   };
 
   return (
-    <div className="bookcart">
-      <LikeButton bookId={book.id} />
-      <div className="book">
-        <table>
-          <tbody>
-            <tr>
-              <td><h3>Book Name:</h3></td>
-              <td><span>{book.title}</span></td>
-            </tr>
-            <tr>
-              <td><h3>Author:</h3></td>
-              <td><span>{book.author}</span></td>
-            </tr>
-            <tr>
-              <td><h3>Price:</h3></td>
-              <td><span>${book.price}</span></td>
-            </tr>
-          </tbody>
-        </table>
-        <span
-          onClick={() => addToCart(book)}
-          className="btn btn-2 btn-sep icon-cart"
-        >
-          Add to Cart
-        </span>
+    <>
+      <div className="book-card">
+      <div className="action-icons">
+          <Link to={`/editbook/${book.id}`} onClick={startEditing} className="edit-icon">
+            &#9999;
+          </Link>
+          <Link onClick={startDelete} className="delete-icon">
+            &#x2421;
+          </Link>
+        </div>
+
+        <div className="book-image">
+          <img src={book.bookimg} alt="Book Cover" />
+        </div>
+        
+
+        <div className="book-details">
+
+          <LikeButton bookId={book.id} />
+
+          <table>
+            <tbody>
+              <tr>
+                <td><h3>Book Name:</h3></td>
+                <td><span>{book.title}</span></td>
+              </tr>
+              <tr>
+                <td><h3>Author:</h3></td>
+                <td><span>{book.author}</span></td>
+              </tr>
+              <tr>
+                <td><h3>Price:</h3></td>
+                <td><span>${book.price}</span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <button onClick={() => addToCart(book)} className="btn add-to-cart">
+            Add to Cart
+          </button>
+
+
+
+        </div>
+
+
+        {isEditing && editedBook && (
+          <AddBook bookDetails={editedBook} onSave={handleSaveEdit} />
+        )}
       </div>
+    </>
 
-      <Link
-        to={`/editbook/${book.id}`}
-        onClick={startEditing}
-        className="edit-icon icon-pencil"
-      >
-        &#9999;
-      </Link>
 
-      <Link
-        onClick={startDelete}
-        className="delete-icon icon-trash"
-      >
-       &#x2421;
-      </Link>
-
-      {isEditing && editedBook && (
-        <AddBook 
-          bookDetails={editedBook} 
-          onSave={handleSaveEdit} 
-        />
-      )}
-    </div>
   );
 }
 

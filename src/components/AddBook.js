@@ -9,6 +9,7 @@ function AddBook() {
     title: "",
     author: "",
     price: "",
+    bookimg: "", 
   });
 
   useEffect(() => {
@@ -20,6 +21,7 @@ function AddBook() {
           title: bookToEdit.title,
           author: bookToEdit.author,
           price: bookToEdit.price,
+          bookimg: bookToEdit.bookimg || "", 
         });
       }
     }
@@ -39,6 +41,22 @@ function AddBook() {
     });
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    console.log(file);
+    
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setBookForm({
+          ...bookForm,
+          bookimg: reader.result, 
+        });
+      };
+      reader.readAsDataURL(file); 
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const updatedBook = {
@@ -46,15 +64,14 @@ function AddBook() {
       price: parseFloat(bookForm.price) || 0,
     };
 
+    const existingBooks = JSON.parse(localStorage.getItem("books")) || [];
+
     if (id) {
-      const existingBooks = JSON.parse(localStorage.getItem("books")) || [];
       const updatedBooks = existingBooks.map((book) =>
         book.id === parseInt(id) ? { ...book, ...updatedBook } : book
       );
       localStorage.setItem("books", JSON.stringify(updatedBooks));
-      navigate("/");
     } else {
-      const existingBooks = JSON.parse(localStorage.getItem("books")) || [];
       const newId = existingBooks.length > 0 
         ? Math.max(...existingBooks.map(book => book.id)) + 1
         : 0;
@@ -66,8 +83,9 @@ function AddBook() {
 
       existingBooks.push(newBook);
       localStorage.setItem("books", JSON.stringify(existingBooks));
-      navigate("/");
     }
+
+    navigate("/");
   };
 
   return (
@@ -88,6 +106,23 @@ function AddBook() {
             />
           </div>
         ))}
+        <div className="form-group">
+          <input
+            type="file"
+            id="image"
+            name="bookimg"
+            onChange={handleImageChange}
+          />
+          {bookForm.bookimg && (
+            <div className="image-preview">
+              <img
+                src={bookForm.bookimg} 
+                alt="Uploaded preview"
+               
+              />
+            </div>
+          )}
+        </div>
         <button type="submit">{id ? "Save Changes" : "Add Book"}</button>
       </form>
     </div>

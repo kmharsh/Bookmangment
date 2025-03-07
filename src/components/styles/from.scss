@@ -21,9 +21,11 @@ $color-white: #FFF;
     form {
         display: flex;
         flex-direction: column;
+
         .form-group {
             margin-bottom: 15px;
         }
+
         input {
             margin-right: 8px;
             box-shadow: inset 2px 2px 5px #BABECC, inset -5px -5px 10px #FFF;
@@ -36,6 +38,7 @@ $color-white: #FFF;
             border-radius: 10px;
             border: none;
             outline: none;
+
             &:focus {
                 box-shadow: inset 1px 1px 2px $color-shadow, inset -1px -1px 2px $color-white;
             }
@@ -57,12 +60,22 @@ $color-white: #FFF;
             border: none;
             border-radius: 10px;
             outline: none;
-           &:hover {
+
+            &:hover {
                 box-shadow: -2px -2px 5px #FFF, 2px 2px 5px #BABECC;
             }
+
             &:focus {
                 outline: none;
             }
         }
+    }
+}
+
+.image-preview {
+    img {
+        max-width: 100%;
+        max-height: 300px;
+        object-fit: contain;
     }
 }
