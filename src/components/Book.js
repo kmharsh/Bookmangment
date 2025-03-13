@@ -27,6 +27,12 @@ function Book({ book }) {
     }
   };
 
+  const removeFromCart = (book) => {
+    const updatedCart = cart.filter(item => item.id !== book.id);
+    setCart(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  };
+
   const handleSaveEdit = (updatedBook) => {
     setIsEditing(false);
     const existingBooks = JSON.parse(localStorage.getItem("books")) || [];
@@ -57,6 +63,8 @@ function Book({ book }) {
   const goToBookDetails = () => {
     navigate(`/bookdetails/${book.id}`);
   };
+
+  const isBookInCart = cart.some(item => item.id === book.id);
 
   return (
     <div className="book-card">
@@ -90,8 +98,17 @@ function Book({ book }) {
           </tbody>
         </table>
 
-        <button onClick={() => addToCart(book)} className="btn add-to-cart">
-          Add to Cart
+        <button
+          onClick={() => {
+            if (isBookInCart) {
+              removeFromCart(book);
+            } else {
+              addToCart(book);
+            }
+          }}
+          className="btn add-to-cart"
+        >
+          {isBookInCart ? "Remove to Cart" : "Add to Cart"}
         </button>
       </div>
       {isEditing && editedBook && (

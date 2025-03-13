@@ -5,11 +5,52 @@ function PurchaseHistory() {
   const [purchaseHistory, setPurchaseHistory] = useState(null);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("");
+  const [isPaymentInProgress, setIsPaymentInProgress] = useState(false); // To prevent multiple clicks
 
   useEffect(() => {
     const history = JSON.parse(localStorage.getItem("purchaseHistory"));
     setPurchaseHistory(history);
   }, []);
+
+  const handleRazorpayPayment = (amount) => {
+    if (isPaymentInProgress) return; 
+    setIsPaymentInProgress(true); 
+
+    console.log("Razorpay Payment Handler Called");
+
+ 
+    if (!window.Razorpay) {
+      console.error("Razorpay script not loaded properly.");
+      setIsPaymentInProgress(false);
+      return;
+    }
+
+    const options = {
+      key: "rzp_test_1DpqOq9IzdwDi6", 
+      amount: amount * 1, 
+      currency: "INR",
+      handler: function (response) {
+        console.log("Payment successful", response);
+        setIsPaymentInProgress(false);
+      },
+      prefill: {
+        name: "Customer Name",
+        email: "customer@example.com",
+        contact: "9999999999",
+      },
+      notes: {
+        address: "Customer Address",
+      },
+      theme: {
+        color: "#F37254",
+      },
+    };
+
+    console.log("Razorpay options:", options);
+
+    const razorpay = new window.Razorpay(options);
+    razorpay.open();
+  };
 
   const handlePaymentClick = () => {
     setShowPaymentOptions(true);
@@ -17,7 +58,9 @@ function PurchaseHistory() {
 
   const handlePaymentOptionSelect = (method) => {
     setPaymentMethod(method);
-    alert(`Payment method selected: ${method}`);
+    if (method === "Razorpay" && purchaseHistory) {
+      handleRazorpayPayment(purchaseHistory.totalAmount);
+    }
     setShowPaymentOptions(false);
   };
 
@@ -64,7 +107,13 @@ function PurchaseHistory() {
               <button onClick={() => handlePaymentOptionSelect("Cash on Delivery")}>
                 Cash on Delivery
               </button>
-              <button className="close-modal" onClick={() => setShowPaymentOptions(false)}>
+              <button onClick={() => handlePaymentOptionSelect("Razorpay")}>
+                Razorpay
+              </button>
+              <button
+                className="close-modal"
+                onClick={() => setShowPaymentOptions(false)}
+              >
                 Close
               </button>
             </div>
