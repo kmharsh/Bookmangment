@@ -1,28 +1,27 @@
+/* styles/Header.scss */
 .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #333;
+  color: white;
+
+  h1 {
+    font-size: 2rem;
+    margin: 0;
+    color: #fff;
+  }
+
+  .header-icons {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: #333;
-    color: white;
-  
-    h1 {
-      font-size: 2rem;
-      margin: 0;
-      color: #fff;
-    }
-  
-    .header-icons {
-      display: flex;
-      gap: 47px;
-      
-    }
-  
+    gap: 47px;
+
     .cart-icon, .history-icon {
       cursor: pointer;
       position: relative;
     }
-  
+
     .cart-count, .history-bell {
       position: absolute;
       top: -5px;
@@ -31,23 +30,78 @@
       border-radius: 50%;
       padding: 5px;
       font-size: 12px;
+      background-color: red; /* Assuming you want a red background for count/bell */
     }
-    nav{
-      width: 60%;
-      .navbar{
-        display: flex;
-        justify-content: space-around;
-        align-items: baseline;
-        width: 100%;
-        li{
-          list-style: none;
-         a{
+  }
+
+  nav {
+    width: 60%;
+    
+    .navbar {
+      display: flex;
+      justify-content: space-around;
+      align-items: baseline;
+      width: 100%;
+      list-style: none;
+      padding: 0;
+      
+      li {
+        position: relative;
+        padding: 10px;
+        display: inline-block;
+        cursor: pointer;
+        overflow: hidden;
+
+        &.active {
+          font-weight: bold;
+          color: #008cba;
+        }
+
+        a {
           text-decoration: none;
           color: #fff;
-         }
+          padding: 10px;
+          display: block;
+        }
+
+        /* Creating the animated border effect ONLY when active */
+        &.active::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border: 2px solid #008cba; /* Border color */
+          border-radius: 10px;
+          box-sizing: border-box;
+          animation: borderAnimation 4s infinite linear;
         }
       }
     }
-    
   }
-  
+}
+
+/* Animation for the border effect */
+@keyframes borderAnimation {
+  0% {
+    transform: scaleX(0) scaleY(0);
+    transform-origin: top left;
+  }
+  25% {
+    transform: scaleX(1) scaleY(0);
+    transform-origin: top left;
+  }
+  50% {
+    transform: scaleX(1) scaleY(1);
+    transform-origin: bottom right;
+  }
+  75% {
+    transform: scaleX(0) scaleY(1);
+    transform-origin: bottom right;
+  }
+  100% {
+    transform: scaleX(0) scaleY(0);
+    transform-origin: top left;
+  }
+}

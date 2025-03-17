@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import CartModal from './CartModal';
 import './styles/Header.scss';
 
 function Header() {
   const [cart, setCart] = useState([]);
   const [cartVisible, setCartVisible] = useState(false);
+
+  // Get the current location
+  const location = useLocation();
 
   useEffect(() => {
     const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -16,14 +19,25 @@ function Header() {
     setCartVisible(!cartVisible);
   };
 
+  // Function to determine if a link is active based on the current path
+  const isActive = (path) => {
+    return location.pathname === path ? "active" : "";
+  };
+
   return (
     <header className="header">
       <h1>Book Management System</h1>
       <nav>
         <ul className="navbar">
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/cart">Cart</Link></li>
-          <li><Link to="/add-book">Add Book</Link></li>
+          <li className={isActive("/")}>
+            <Link to="/">Home</Link>
+          </li>
+          <li className={isActive("/cart")}>
+            <Link to="/cart">Cart</Link>
+          </li>
+          <li className={isActive("/add-book")}>
+            <Link to="/add-book">Add Book</Link>
+          </li>
         </ul>
       </nav>
       <div className="header-icons">
