@@ -28,17 +28,12 @@ function Cart() {
   };
   const navigate = useNavigate();
   const handlePurchase = () => {
-    // Calculate total amount
     const totalAmount = cart.reduce((total, item) => total + item.price * item.quantity, 0);
-
-    // Store purchase history in localStorage
     localStorage.setItem("purchaseHistory", JSON.stringify({ cart, totalAmount }));
 
-    // Clear the cart
     localStorage.removeItem("cart");
     setCart([]);
 
-    // Navigate to the purchase history page
     navigate('/purchase-history');
   };
 

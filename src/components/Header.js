@@ -6,20 +6,16 @@ import './styles/Header.scss';
 function Header() {
   const [cart, setCart] = useState([]);
   const [cartVisible, setCartVisible] = useState(false);
-
-  // Get the current location
   const location = useLocation();
 
   useEffect(() => {
     const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
     setCart(savedCart);
-  }, []); // Run only once on component mount
+  }, []);
 
   const toggleCartModal = () => {
     setCartVisible(!cartVisible);
   };
-
-  // Function to determine if a link is active based on the current path
   const isActive = (path) => {
     return location.pathname === path ? "active" : "";
   };

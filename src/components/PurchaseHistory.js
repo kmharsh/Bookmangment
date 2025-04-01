@@ -5,7 +5,7 @@ function PurchaseHistory() {
   const [purchaseHistory, setPurchaseHistory] = useState(null);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("");
-  const [isPaymentInProgress, setIsPaymentInProgress] = useState(false); // To prevent multiple clicks
+  const [isPaymentInProgress, setIsPaymentInProgress] = useState(false);
 
   useEffect(() => {
     const history = JSON.parse(localStorage.getItem("purchaseHistory"));
