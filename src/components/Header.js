@@ -1,21 +1,38 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import CartModal from './CartModal';
 import './styles/Header.scss';
 
 function Header() {
   const [cart, setCart] = useState([]);
   const [cartVisible, setCartVisible] = useState(false);
+  const [profileVisible, setProfileVisible] = useState(false);
+  const [user, setUser] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
     setCart(savedCart);
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser) {
+      setUser(storedUser);
+    }
   }, []);
 
   const toggleCartModal = () => {
     setCartVisible(!cartVisible);
   };
+
+  const toggleProfilePopup = () => {
+    setProfileVisible(!profileVisible);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
+
   const isActive = (path) => {
     return location.pathname === path ? "active" : "";
   };
@@ -37,14 +54,20 @@ function Header() {
         </ul>
       </nav>
       <div className="header-icons">
-        <div className="cart-icon" onClick={toggleCartModal}>
-          <span className="cart-bell">&#x1F514;</span>
-          <span className="cart-count">{cart.length}</span>
+        
+        
+        <div className="profile-icon" onClick={toggleProfilePopup}>
+          <span className="profile-photo">&#x1F466;</span>
         </div>
-        <Link to="/purchase-history" className="history-icon">
-          <span className="history-bell">&#x1F4C6;</span>
-        </Link>
       </div>
+
+      {profileVisible && user && (
+        <div className="profile-popup">
+          <p>{user.username}</p>
+          <button onClick={handleLogout}>Logout</button>
+        </div>
+      )}
+
       {cartVisible && <CartModal cart={cart} closeCart={toggleCartModal} />}
     </header>
   );
