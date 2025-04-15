@@ -69,6 +69,30 @@ $color-white: #FFF;
                 outline: none;
             }
         }
+        .Linkbtn {
+            margin-top: 20px !important;
+            border-radius: $ruler/2 !important;
+            line-height: 0;
+            width: 100% ;
+            height: $ruler*3 !important;
+            display: inline-flex !important;
+            justify-content: center;
+            align-items: center;
+            margin: 0 $ruler/2;
+            font-size: $ruler*1.2;
+            color: $color-red;
+            border: none;
+            outline: none;
+            text-decoration: none;
+        
+            &:hover {
+                box-shadow: -2px -2px 5px #FFF, 2px 2px 5px #BABECC;
+            }
+        
+            &:focus {
+                outline: none;
+            }
+        }
     }
 }
 
@@ -79,3 +103,4 @@ $color-white: #FFF;
         object-fit: contain;
     }
 }
+

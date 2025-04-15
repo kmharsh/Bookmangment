@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./styles/from.scss";
 
 function Register() {
@@ -66,6 +66,7 @@ function Register() {
           />
         </div>
         <button type="submit">Register</button>
+        <Link className="Linkbtn" to ="/login">Login</Link>
       </form>
     </div>
   );
