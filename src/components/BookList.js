@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import './styles/Booklist.scss';
 import Book from "./Book";
 
 function BookList() {
@@ -11,6 +12,16 @@ function BookList() {
   const [books, setBooks] = useState(initialBooks);
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")) || []);
   const [localdata, setLocaldata] = useState(JSON.parse(localStorage.getItem("books")) || []);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredBooks, setFilteredBooks] = useState([]);
+
+  useEffect(() => {
+    if (!localStorage.getItem("books")) {
+      localStorage.setItem("books", JSON.stringify(initialBooks));
+    }
+    setLocaldata(JSON.parse(localStorage.getItem("books")));
+  }, []);
+
   useEffect(() => {
     if (localdata.length > 0) {
       localdata.forEach(book => {
@@ -20,25 +31,36 @@ function BookList() {
   }, [localdata]);
 
   const addToCart = (book) => {
-    alert("book", book);
     const updatedCart = [...cart, book];
     setCart(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
-  useEffect(() => {
-    if (!localStorage.getItem("books")) {
-      localStorage.setItem("books", JSON.stringify(initialBooks));
-    }
-    setLocaldata(JSON.parse(localStorage.getItem("books")));
-  }, []);
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const filtered = localdata.filter(book =>
+      book.author.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredBooks(filtered);
+  };
 
-  const data = localdata.length > 0 ? localdata : books;
+  const dataToDisplay = filteredBooks.length > 0 ? filteredBooks : localdata;
 
   return (
     <div>
+      <form onSubmit={handleSearch} className="search-form">
+        <input
+          type="text"
+          placeholder="Search by author..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <button type="submit">Search</button>
+      </form>
+
+      {/* 📚 Book List */}
       <div className="d-flex">
-        {data.map((book, index) => (
+        {dataToDisplay.map((book, index) => (
           <Book key={index} book={book} onAddToCart={addToCart} />
         ))}
       </div>
